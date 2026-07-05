@@ -41,10 +41,19 @@ h1,h2,h3{
 
 </style>
 """, unsafe_allow_html=True)
+
 load_dotenv()
 
-api_key = os.getenv("GEMINI_API_KEY")
+if "GEMINI_API_KEY" in st.secrets:
+    api_key = st.secrets["GEMINI_API_KEY"]
+else:
+    api_key = os.getenv("GEMINI_API_KEY")
 
+if not api_key:
+    st.error("Gemini API Key not found!")
+    st.stop()
+
+genai.configure(api_key=api_key)
 if not api_key:
     st.error("Gemini API Key not found!")
     st.stop()
