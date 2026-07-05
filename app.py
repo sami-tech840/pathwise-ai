@@ -44,16 +44,18 @@ h1,h2,h3{
 
 load_dotenv()
 
-if "GEMINI_API_KEY" in st.secrets:
-    api_key = st.secrets["GEMINI_API_KEY"]
+st.write("Secrets available:", list(st.secrets.keys()))
+
+api_key = st.secrets.get("GEMINI_API_KEY")
+
+if api_key:
+    st.success("✅ Streamlit Secret Found")
 else:
-    api_key = os.getenv("GEMINI_API_KEY")
+    st.error("❌ Streamlit Secret NOT Found")
 
 if not api_key:
-    st.error("Gemini API Key not found!")
-    st.stop()
+    api_key = os.getenv("GEMINI_API_KEY")
 
-genai.configure(api_key=api_key)
 if not api_key:
     st.error("Gemini API Key not found!")
     st.stop()
